@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>br.com.asv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<name>asv-parent</name>
 	<description>Project Parent to Project ASV</description>
 	<properties>
@@ -47,7 +47,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub OWNER Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/arcanjoalain/${name}</url>
+			<url>https://maven.pkg.github.com/arcanjoalain/${project.name}</url>
 		</repository>
 	</distributionManagement>
 
