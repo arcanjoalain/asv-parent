@@ -9,15 +9,45 @@
 		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>br.com.asv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.1.4</version>
+	<version>0.1.6</version>
 	<packaging>pom</packaging>
+
 	<name>asv-parent</name>
 	<description>Project Parent to Project ASV</description>
+	<inceptionYear>2020</inceptionYear>
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url></url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>asv</id>
+			<name>Alain de Souza Viera</name>
+			<email>arcanjoalain@gmail.com</email>
+			<url>http://</url>
+			<roles>
+				<role>Documentation</role>
+				<role>Java Developer</role>
+			</roles>
+			<timezone>-4</timezone>
+		</developer>
+	</developers>
+
 	<properties>
 		<java.version>14</java.version>
 		<spring-cloud.version>2020.0.0</spring-cloud.version>
+		<l10nPluginVersion>1.8</l10nPluginVersion>
+		<javadocPluginVersion>3.2.0</javadocPluginVersion>
+		<pluginPluginVersion>3.5</pluginPluginVersion>
+		<codenarcPluginVersion>0.22-1</codenarcPluginVersion>
+		<infoReportsPluginVersion>2.9</infoReportsPluginVersion>
+		<pmd.plugin.version>3.13.0</pmd.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -30,6 +60,19 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -55,6 +98,138 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>${pmd.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.0.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.5</version> <!-- using latest from maven central, feel free to use any specific -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<show>private</show>
+					<nohelp>true</nohelp>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+							<goal>javadoc</goal>
+							<goal>test-javadoc</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<!-- failOnViolation is actually true by default, but can be disabled -->
+					<failOnViolation>true</failOnViolation>
+					<!-- printFailingErrors is pretty useful -->
+					<printFailingErrors>true</printFailingErrors>
+					<targetJdk>14</targetJdk>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<dependencies>
+					<!-- https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd-java -->
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-java</artifactId>
+						<version>6.23.0</version>
+					</dependency>
+
+					<!-- https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd-core -->
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-core</artifactId>
+						<version>6.23.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.13.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${infoReportsPluginVersion}</version>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.l10n-maven-plugin</groupId>
+				<artifactId>l10n-maven-plugin</artifactId>
+				<version>${l10nPluginVersion}</version>
+				<configuration>
+					<locales>
+						<locale>es</locale>
+						<locale>fr</locale>
+						<locale>no_NO</locale>
+						<locale>pt_BR</locale>
+					</locales>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>codenarc-maven-plugin</artifactId>
+				<version>${codenarcPluginVersion}</version>
+				<configuration>
+					<maxPriority1Violations>0</maxPriority1Violations>
+					<maxPriority2Violations>0</maxPriority2Violations>
+					<maxPriority3Violations>5</maxPriority3Violations>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.5</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<!-- Optional directory to put findbugs xdoc xml report -->
+					<xmlOutputDirectory>target/site</xmlOutputDirectory>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<profiles>
 		<profile>
