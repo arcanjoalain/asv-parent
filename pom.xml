@@ -6,15 +6,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.5</version>
+		<version>3.0.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-
 	<groupId>br.com.asv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.1.9</version>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
-
 	<name>asv-parent</name>
 	<description>Project Parent to Project ASV</description>
 	<inceptionYear>2020</inceptionYear>
@@ -38,9 +36,8 @@
 			<timezone>-4</timezone>
 		</developer>
 	</developers>
-
 	<properties>
-		<java.version>14</java.version>
+		<java.version>17</java.version>
 		<l10nPluginVersion>1.8</l10nPluginVersion>
 		<javadocPluginVersion>3.2.0</javadocPluginVersion>
 		<pluginPluginVersion>3.5</pluginPluginVersion>
@@ -53,13 +50,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -72,7 +68,6 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -105,14 +100,12 @@
 					<locales>pt_BR</locales>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
 			<plugin>
-
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-maven-plugin</artifactId>
 				<version>4.2.3</version>
@@ -166,20 +159,18 @@
 						</goals>
 					</execution>
 				</executions>
-
 				<dependencies>
 					<!-- https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd-java -->
 					<dependency>
 						<groupId>net.sourceforge.pmd</groupId>
 						<artifactId>pmd-java</artifactId>
-						<version>6.23.0</version>
+						<version>6.37.0</version>
 					</dependency>
-
 					<!-- https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd-core -->
 					<dependency>
 						<groupId>net.sourceforge.pmd</groupId>
 						<artifactId>pmd-core</artifactId>
-						<version>6.23.0</version>
+						<version>6.37.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -190,7 +181,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.13.0</version>
+				<version>3.19.0</version>
+                 <configuration>
+                    <includeTests>false</includeTests>
+                    <rulesets>
+                        <ruleset>config/pmd/pmdMain.xml</ruleset>
+                    </rulesets>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -201,7 +200,6 @@
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-maven-plugin</artifactId>
 				<version>4.2.3</version>
-
 				<configuration>
 					<failOnError>false</failOnError>
 					<xmlOutput>true</xmlOutput>
@@ -211,44 +209,19 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
 	<profiles>
 		<profile>
-			<id>itn</id>
-			<activation>
-				<property>
-					<name>!useTestRepo</name>
-				</property>
-			</activation>
-			<properties>
-			</properties>
-			<distributionManagement>
-				<repository>
-					<id>itn-nexus-releases</id>
-					<url>https://nexus.institutoitn.com.br/repository/maven-releases/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-
-		<profile>
 			<id>github</id>
-			<activation>
-				<property>
-					<name>useTestRepo</name>
-				</property>
-			</activation>
-			<properties>
-			</properties>
+			<properties></properties>
 			<distributionManagement>
 				<repository>
 					<id>github</id>
 					<name>GitHub OWNER Apache Maven Packages</name>
-					<url>https://maven.pkg.github.com/arcanjoalain/${project.name}</url>
+					<url>https://maven.pkg.github.com/arcanjoalain/asv-parent</url>
 				</repository>
 			</distributionManagement>
 		</profile>
 	</profiles>
-
 	<organization>
 		<name>ASV</name>
 	</organization>
